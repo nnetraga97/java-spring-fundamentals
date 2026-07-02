@@ -1,6 +1,5 @@
 package com.nick.javafundamentals.exercises.java02;
 
-import com.nick.javafundamentals.domain.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

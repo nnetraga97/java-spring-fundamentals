@@ -1,6 +1,5 @@
 package com.nick.javafundamentals.exercises.conc01;
 
-import com.nick.javafundamentals.concurrency.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
