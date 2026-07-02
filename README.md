@@ -19,11 +19,17 @@ Requirements: a JDK (21+; developed on JDK 25). Maven is bundled via the wrapper
 Layout:
 
 ```text
-src/main/java/com/nick/javafundamentals/   # exercise code, one package per topic
-src/test/java/com/nick/javafundamentals/    # tests
-notes/                                       # one learning note per session
-docs/exercises/                              # the exercise catalog
+src/main/java/com/nick/javafundamentals/            # production code, one package per topic
+src/test/java/com/nick/javafundamentals/exercises/  # tests, one folder per exercise id
+notes/                                               # one learning note per session
+docs/exercises/                                      # the exercise catalog
 ```
+
+Tests are grouped by exercise, not by topic: each exercise's test lives in
+`src/test/java/com/nick/javafundamentals/exercises/<id>/` (e.g. `exercises/java02/`,
+`exercises/spr01/`). The production stubs it drives stay in their topic package
+(`domain/`, `concurrency/`, …). So `exercises/java02/` tells you at a glance that
+folder is `JAVA-02`.
 
 Each topic package has a `package-info.java` listing the exercise IDs that live there. The **worked reference example** is `JAVA-01` — see `collections/IdempotencyCache.java`, its test `IdempotencyCacheTest`, and the matching note in `notes/`. Use it as the template for the shape of an exercise: production code, focused tests, and a short trade-off note.
 
@@ -59,7 +65,7 @@ Three kinds of exercise:
   `JAVA-02..06`, `CONC-01/03/04/06`, `DIST-02/04/06`, `SPR-01` (`@WebMvcTest`),
   `DATA-04` (`@DataJpaTest`).
 - **Testing placeholders** (`TEST-01..04`): a skeleton where *you* write the
-  assertions — that is the skill being practiced (see `testing/Test01DomainUnitTests`).
+  assertions — that is the skill being practiced (see `exercises/test01/Test01DomainUnitTests`).
 - **Written / demonstrate exercises**: no pass/fail test. This covers `DESIGN-*`,
   investigation-style ones (deadlock, slow query, index design), and
   "demonstrate framework behavior" ones where there is no class to build
