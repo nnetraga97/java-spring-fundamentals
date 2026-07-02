@@ -34,6 +34,36 @@ Start a new exercise quickly:
 # creates branch exercise/YYYY-MM-DD-generics-validator and a note stub
 ```
 
+## How the Exercises Are Wired (Test-Driven)
+
+Most exercises come with a **spec test that is the answer key**, plus a **stub class**
+whose methods throw `UnsupportedOperationException("TODO ...")`. The test starts
+`@Disabled` so `./mvnw verify` is green until you choose to begin.
+
+To do an exercise:
+
+1. Find its test (e.g. `AuthorizationStateMachineTest` for `JAVA-02`) and **delete the
+   `@Disabled(...)` line**.
+2. Run it and watch it go red:
+
+   ```bash
+   ./mvnw test -Dtest=AuthorizationStateMachineTest
+   ```
+
+3. Fill in the stub methods until the test is green. The test tells you exactly what
+   behavior is expected — that is how you know your solution is correct.
+
+Three kinds of exercise:
+
+- **Spec tests** (most `JAVA-*`, `CONC-*`, `DIST-*`): a full failing test is provided.
+- **Testing exercises** (`TEST-*`): a placeholder where *you* write the assertions —
+  that is the skill being practiced (see `testing/Test01DomainUnitTests`).
+- **Written artifacts** (`DESIGN-*`, and investigation-style ones like deadlock or slow
+  query): no pass/fail test; the deliverable is a note or design doc under `notes/`.
+
+`JAVA-01` is fully solved as the reference; `JAVA-02` through `JAVA-06` are the first
+set wired up this way.
+
 ## Daily Workflow
 
 1. Create a branch for the day.
