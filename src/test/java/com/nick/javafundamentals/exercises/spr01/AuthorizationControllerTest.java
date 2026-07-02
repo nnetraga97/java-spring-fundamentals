@@ -1,6 +1,5 @@
 package com.nick.javafundamentals.exercises.spr01;
 
-import com.nick.javafundamentals.api.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;

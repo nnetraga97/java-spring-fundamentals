@@ -1,7 +1,7 @@
 # 2026-07-02 - Hash-based collections (JAVA-01)
 
 > Filled-in example note matching the worked reference code in
-> `src/main/java/com/nick/javafundamentals/collections/`.
+> `src/main/java/com/nick/javafundamentals/exercises/java01/`.
 
 ## Exercises
 

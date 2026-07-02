@@ -1,6 +1,5 @@
 package com.nick.javafundamentals.exercises.java01;
 
-import com.nick.javafundamentals.collections.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

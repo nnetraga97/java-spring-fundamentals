@@ -23,25 +23,25 @@ git checkout -b exercise/kafka-outbox-idempotent-consumer
 
 ## Project Layout
 
-The project already exists as a runnable Maven + Spring Boot app (see the top-level README for how to run it). Add exercise code under the matching topic package:
+The project already exists as a runnable Maven + Spring Boot app (see the top-level README for how to run it). Everything for one exercise lives in a folder named for its id, on both the code and test side:
 
 ```text
-src/main/java/com/nick/javafundamentals/
-  collections/    # JAVA-01 (worked example lives here), JAVA-05, JAVA-06
-  domain/         # JAVA-02, JAVA-03, JAVA-04
-  concurrency/    # CONC-01..CONC-06
-  api/            # SPR-01, SPR-05, SPR-06, SPR-08, TEST-02, TEST-04, PROD-02
-  persistence/    # DATA-01..DATA-07, SPR-04
-  messaging/      # DIST-01..DIST-06
-  observability/  # PROD-01, PROD-03, PROD-04, PROD-06
-  design/         # DESIGN-* proof-of-concept code (most DESIGN work is written notes)
-src/test/java/com/nick/javafundamentals/
-notes/            # one learning note per session (_template.md, plus a worked example)
+src/main/java/com/nick/javafundamentals/exercises/
+  java01/  # JAVA-01 (worked reference example)
+  java02/ java03/ java04/ java05/ java06/
+  conc01/ conc03/ conc04/ conc06/
+  dist02/ dist04/ dist06/
+  spr01/   # SPR-01
+  data04/  # DATA-04
+  common/  # types shared by >1 exercise (e.g. Message for DIST-02 & DIST-04)
+src/test/java/com/nick/javafundamentals/exercises/
+  <same folders>/  # each exercise's test, plus test01..test04 placeholders
+notes/             # one learning note per session (_template.md, plus a worked example)
 ```
 
-Each package has a `package-info.java` that lists the exercises it owns. `JAVA-01` is fully implemented as the reference for the expected shape (code + tests + note).
+Each exercise folder has a short `package-info.java` describing it. Code and test share the same package, so a test needs no import to reach the code it drives. `JAVA-01` is fully implemented as the reference for the expected shape (code + tests + note).
 
-The Spring Boot app is a single evolving application; split into modules later only if the repo grows enough to need it.
+New exercises get a new `exercises/<id>/` folder. The Spring Boot app is a single evolving application; split into modules later only if the repo grows enough to need it.
 
 ## Definition of Done
 

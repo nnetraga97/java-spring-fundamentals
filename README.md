@@ -19,19 +19,24 @@ Requirements: a JDK (21+; developed on JDK 25). Maven is bundled via the wrapper
 Layout:
 
 ```text
-src/main/java/com/nick/javafundamentals/            # production code, one package per topic
-src/test/java/com/nick/javafundamentals/exercises/  # tests, one folder per exercise id
-notes/                                               # one learning note per session
-docs/exercises/                                      # the exercise catalog
+src/main/java/com/nick/javafundamentals/exercises/<id>/  # production code, one folder per exercise
+src/test/java/com/nick/javafundamentals/exercises/<id>/   # tests, same folder name as the code
+notes/                                                     # one learning note per session
+docs/exercises/                                            # the exercise catalog
 ```
 
-Tests are grouped by exercise, not by topic: each exercise's test lives in
-`src/test/java/com/nick/javafundamentals/exercises/<id>/` (e.g. `exercises/java02/`,
-`exercises/spr01/`). The production stubs it drives stay in their topic package
-(`domain/`, `concurrency/`, …). So `exercises/java02/` tells you at a glance that
-folder is `JAVA-02`.
+Everything for one exercise sits in a folder named for its id, on both the code and
+test side. `exercises/java02/` is `JAVA-02`; `exercises/spr01/` is `SPR-01`. Because
+the code and test share the same package name, the test needs no import to reach the
+code it drives. Two exceptions: `exercises/common/` holds types shared by more than
+one exercise (currently just `Message`, used by `DIST-02` and `DIST-04`), and the
+Spring context smoke test stays at the test root.
 
-Each topic package has a `package-info.java` listing the exercise IDs that live there. The **worked reference example** is `JAVA-01` — see `collections/IdempotencyCache.java`, its test `IdempotencyCacheTest`, and the matching note in `notes/`. Use it as the template for the shape of an exercise: production code, focused tests, and a short trade-off note.
+Each exercise folder has a short `package-info.java` describing it. The **worked
+reference example** is `JAVA-01` — see `exercises/java01/IdempotencyCache.java`, its
+test `IdempotencyCacheTest`, and the matching note in `notes/`. Use it as the
+template for the shape of an exercise: production code, focused tests, and a short
+trade-off note.
 
 Start a new exercise quickly:
 

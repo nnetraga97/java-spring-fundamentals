@@ -1,6 +1,5 @@
 package com.nick.javafundamentals.exercises.dist06;
 
-import com.nick.javafundamentals.messaging.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
