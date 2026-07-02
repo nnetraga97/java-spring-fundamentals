@@ -4,6 +4,36 @@ This repository is a hands-on exercise workbook for senior and staff-level Java 
 
 The first pass is intentionally focused on high-signal backend interview topics: Java runtime depth, concurrency, Spring Boot internals, REST APIs, persistence, transactions, messaging, observability, production debugging, and system design trade-offs.
 
+## Getting Started
+
+The repository ships as a runnable Maven + Spring Boot project so you can start an exercise in seconds instead of scaffolding a build first.
+
+Requirements: a JDK (21+; developed on JDK 25). Maven is bundled via the wrapper, so you do not need Maven installed.
+
+```bash
+./mvnw verify          # compile + run all tests
+./mvnw spring-boot:run # start the app (local profile, in-memory H2)
+./mvnw test -Dtest=IdempotencyCacheTest   # run one exercise's tests
+```
+
+Layout:
+
+```text
+src/main/java/com/nick/javafundamentals/   # exercise code, one package per topic
+src/test/java/com/nick/javafundamentals/    # tests
+notes/                                       # one learning note per session
+docs/exercises/                              # the exercise catalog
+```
+
+Each topic package has a `package-info.java` listing the exercise IDs that live there. The **worked reference example** is `JAVA-01` — see `collections/IdempotencyCache.java`, its test `IdempotencyCacheTest`, and the matching note in `notes/`. Use it as the template for the shape of an exercise: production code, focused tests, and a short trade-off note.
+
+Start a new exercise quickly:
+
+```bash
+./scripts/start-exercise.sh JAVA-03 generics-validator
+# creates branch exercise/YYYY-MM-DD-generics-validator and a note stub
+```
+
 ## Daily Workflow
 
 1. Create a branch for the day.
