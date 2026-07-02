@@ -149,3 +149,28 @@ Interview prompts:
 - What makes a cursor stable?
 - How do you paginate mutable result sets?
 
+## DATA-07: Batch Writes and Connection Pool Behavior
+
+Priority: `P2`
+
+Scenario: A job inserts tens of thousands of rows and occasionally exhausts the connection pool.
+
+Build:
+
+- Insert a large batch naively (row-by-row) and measure it.
+- Enable JDBC batching (`hibernate.jdbc.batch_size`, ordered inserts) and re-measure.
+- Observe HikariCP behavior: pool size, connection acquisition timeout, and what happens when the pool is starved.
+- Add a test or runner comparing before/after throughput.
+
+Acceptance criteria:
+
+- Batched inserts measurably reduce round-trips.
+- You can explain pool starvation and how timeouts surface it.
+- Notes cover batch size, flush/clear to bound the persistence context, and identity vs sequence generation effects on batching.
+
+Interview prompts:
+
+- Why can `GenerationType.IDENTITY` disable JDBC batching?
+- How do you size a connection pool, and what does starvation look like?
+- How do you keep the Hibernate persistence context from growing during a large batch?
+

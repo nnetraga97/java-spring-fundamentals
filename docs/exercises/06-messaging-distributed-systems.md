@@ -124,3 +124,28 @@ Interview prompts:
 - When is compensation acceptable?
 - How do you make long-running workflows observable?
 
+## DIST-06: Distributed Rate Limiting
+
+Priority: `P1`
+
+Scenario: A per-merchant request limit must hold across several service instances, not just one JVM.
+
+Build:
+
+- Implement a token-bucket (or fixed/sliding-window) limiter in-process first.
+- Make it correct across instances using a shared store (model Redis with a single shared map/atomic if a broker is not available).
+- Handle the store being briefly unavailable (fail-open vs fail-closed decision).
+- Add tests for burst, steady-state, and limit-exceeded behavior.
+
+Acceptance criteria:
+
+- Same-merchant traffic is limited consistently regardless of which instance serves it.
+- The limiter degrades according to an explicit, documented policy when the store is down.
+- Notes compare token bucket vs sliding window and local vs distributed enforcement.
+
+Interview prompts:
+
+- Why is a purely in-memory limiter wrong behind a load balancer?
+- Token bucket vs sliding window — when does each fit?
+- Do you fail open or fail closed when the rate-limit store is unavailable?
+

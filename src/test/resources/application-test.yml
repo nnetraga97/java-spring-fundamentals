@@ -1,0 +1,12 @@
+# Test profile: H2 by default so fast slice/context tests need nothing external.
+# Integration tests that require real PostgreSQL behavior should use
+# @Testcontainers + @ServiceConnection instead of this datasource (see TEST-03).
+spring:
+  datasource:
+    url: jdbc:h2:mem:fundamentals-test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    open-in-view: false

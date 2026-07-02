@@ -123,3 +123,28 @@ Interview prompts:
 - What belongs in a post-incident review?
 - How do you prevent repeat incidents?
 
+## PROD-06: Distributed Tracing Across a Request
+
+Priority: `P1`
+
+Scenario: A request crosses the API, a service call, and a database query, and you need to see where the time goes.
+
+Build:
+
+- Add Micrometer Tracing (with an OTLP or logging exporter) to the app.
+- Ensure a trace/span ID is created at the edge and propagated to downstream calls.
+- Add a custom span around the expensive operation.
+- Correlate the trace ID with the logging MDC (ties into PROD-02).
+
+Acceptance criteria:
+
+- One request produces a single connected trace across layers.
+- Trace and log correlation IDs match.
+- Notes explain spans vs logs vs metrics, sampling, and context propagation across threads.
+
+Interview prompts:
+
+- What is the difference between a trace, a span, and a log line?
+- How is trace context propagated across services and across async boundaries?
+- Why do you sample traces, and how do you keep sampling useful?
+

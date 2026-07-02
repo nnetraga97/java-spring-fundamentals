@@ -149,3 +149,53 @@ Interview prompts:
 - What is the difference between authentication and authorization?
 - How do you secure operational endpoints?
 
+## SPR-07: Caching and Cache Invalidation
+
+Priority: `P1`
+
+Scenario: A hot read (e.g. merchant risk profile) is expensive and called on every authorization.
+
+Build:
+
+- Add `@Cacheable` to the expensive read with a bounded cache (Caffeine).
+- Add `@CacheEvict` (or `@CachePut`) on the write path so stale data cannot linger.
+- Configure a TTL and a maximum size.
+- Add tests proving the second call is served from cache and that a write invalidates it.
+
+Acceptance criteria:
+
+- Cache hits avoid the expensive call.
+- A write makes the next read observe fresh data.
+- Notes explain cache stampede, TTL vs eviction, and local vs distributed caches.
+
+Interview prompts:
+
+- Where does caching help and where does it hurt correctness?
+- How do you prevent a cache stampede on a hot key?
+- When would you move from a local cache to Redis?
+
+## SPR-08: JWT Resource Server
+
+Priority: `P1`
+
+Scenario: Write endpoints must be called only with a valid signed token; roles gate specific actions.
+
+Build:
+
+- Configure the app as an OAuth2 resource server that validates JWTs.
+- Require a scope/authority for write endpoints; leave health public.
+- Extract claims (subject, scopes) into the security context.
+- Add tests for missing token, expired/invalid token, insufficient scope, and success.
+
+Acceptance criteria:
+
+- Invalid or missing tokens are rejected before controllers run.
+- Authorization is enforced by scope/role, not just authentication.
+- Notes explain JWT validation (signature, issuer, expiry) and stateless auth trade-offs.
+
+Interview prompts:
+
+- How does a resource server validate a JWT without calling the auth server every time?
+- What are the risks of stateless tokens (revocation, expiry)?
+- Where do you enforce authorization — filter, method, or both?
+

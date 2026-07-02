@@ -122,3 +122,28 @@ Interview prompts:
 - What does a blocked thread look like?
 - How do you design to avoid lock ordering bugs?
 
+## CONC-06: Virtual Threads and Structured Concurrency
+
+Priority: `P1`
+
+Scenario: A request fans out to several slow downstream calls that are mostly blocked on I/O.
+
+Build:
+
+- Implement the fan-out once on a fixed platform-thread pool and once on virtual threads (`Executors.newVirtualThreadPerTaskExecutor`).
+- Use `StructuredTaskScope` to run the calls concurrently and cancel siblings when one fails.
+- Show that a blocking call no longer pins throughput to pool size.
+- Add a test that proves partial failure cancels the remaining tasks.
+
+Acceptance criteria:
+
+- Virtual-thread version scales blocking calls without a large pool.
+- Structured concurrency propagates failure and cancellation cleanly.
+- Notes explain carrier threads, pinning (`synchronized` vs `ReentrantLock`), and when virtual threads do not help (CPU-bound work).
+
+Interview prompts:
+
+- What problem do virtual threads actually solve?
+- What is thread pinning and how do you avoid it?
+- When would virtual threads make things worse?
+
