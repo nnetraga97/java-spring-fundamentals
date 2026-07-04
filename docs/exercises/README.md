@@ -19,6 +19,8 @@ Every exercise, ordered by the background it assumes. Climb in order if you're b
 - `DATA-01`, `DATA-02`, `DATA-03`, `DATA-06`
 - `TEST-02`, `TEST-03`, `TEST-04`
 - `PROD-01`, `PROD-02`
+- `PATT-01..05` — the [design-pattern exercises](11-design-patterns-ooad.md); pure Java, no framework prerequisites
+- `AEM-01..05` — the [AEM track](10-aem-sling-jcr.md); a new domain, but the code itself is approachable
 
 **Level 3 — Senior/staff** (production judgment, distributed correctness, trade-off fluency):
 
@@ -30,8 +32,10 @@ Every exercise, ordered by the background it assumes. Climb in order if you're b
 - `PROD-03..06`
 - `DESIGN-01..06`
 - `WAR-01..06` — the [war-room drills](09-production-war-rooms.md), best done after their hands-on siblings
+- `AEM-06..08` — Dispatcher, MSM, and migration design; the staff-level AEM conversations
+- `PATT-06` — the OOAD/SOLID review of your own work
 
-Prerequisite rule of thumb: within a topic, do the lower-numbered levels first; across topics, `CONC-01` before any `DIST-*`, `DATA-01/02` before `DATA-04+`, and `SPR-01` before other `SPR-*`.
+Prerequisite rule of thumb: within a topic, do the lower-numbered levels first; across topics, `CONC-01` before any `DIST-*`, `DATA-01/02` before `DATA-04+`, `SPR-01` before other `SPR-*`, and `AEM-01..05` in listed order (each builds on the previous concept).
 
 On any given day:
 
@@ -67,6 +71,8 @@ src/main/java/com/nick/javafundamentals/exercises/
   dist02/ dist04/ dist06/
   spr01/   # SPR-01
   data04/  # DATA-04
+  aem01/ aem02/ aem03/ aem04/ aem05/  # AEM track (AEM Mocks-based)
+  patt01/ patt02/ patt03/ patt04/ patt05/  # design patterns
   common/  # types shared by >1 exercise (e.g. Message for DIST-02 & DIST-04)
 src/test/java/com/nick/javafundamentals/exercises/
   <same folders>/  # each exercise's test, plus test01..test04 placeholders

@@ -223,6 +223,154 @@ Don't refill on a timer — refill lazily. Each `tryAcquire`, compute how much t
 Per key keep `(tokens, lastRefillMillis)`. On acquire: `elapsed = clock - lastRefill`; `earned = elapsed * refillPerSecond / 1000`; if `earned > 0`, `tokens = min(capacity, tokens + earned)` and advance `lastRefill` (by the time the earned tokens account for, or to now). Then: token available → decrement, `true`; else `false`. Use the injected clock — tests move time manually.
 </details>
 
+## AEM-01: ArticleContentRepository (JCR)
+
+<details><summary>Hint 1 — nudge</summary>
+
+Think of the path as segments to walk: start at `session.getRootNode()`, and for each segment either descend (`getNode`) or create (`addNode`). Once you're standing on the final node, `setProperty` twice and `session.save()`.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+```java
+Node node = session.getRootNode();
+for (String segment : path.substring(1).split("/")) {
+    node = node.hasNode(segment) ? node.getNode(segment) : node.addNode(segment);
+}
+node.setProperty("title", title); // setProperty overwrites, so re-saving updates for free
+```
+
+For `findTitle`: guard with `session.nodeExists(path)`, then `node.hasProperty("title")`, then `getProperty("title").getString()`.
+</details>
+
+## AEM-02: ArticleResourceReader (Sling resources)
+
+<details><summary>Hint 1 — nudge</summary>
+
+Both methods are one idea each: `titleOrDefault` is a single `ValueMap` call (the two-arg `get` takes the default); `articleTitles` is "iterate children, keep the ones whose type matches, map through titleOrDefault."
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+`resource.getValueMap().get("title", "Untitled")`. For the children: `parent.getChildren()` is iterable; filter with `child.isResourceType(ARTICLE_RESOURCE_TYPE)` (prefer it over comparing `getResourceType()` strings — it also understands type inheritance in real AEM), collect `titleOrDefault(child)` into a list.
+</details>
+
+## AEM-03: ArticleModel (Sling Models)
+
+<details><summary>Hint 1 — nudge</summary>
+
+The injection already happened by the time your getters run — `title` and `body` are either populated or `null` (OPTIONAL strategy). Both methods are plain null-safe Java; no Sling API needed.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+`displayTitle`: `title != null ? title : "Untitled"`. `teaser`: null body → `""`; body longer than `TEASER_MAX_LENGTH` → `body.substring(0, TEASER_MAX_LENGTH) + "..."`; otherwise the body unchanged (exactly 50 chars gets no ellipsis — check `>` not `>=`).
+</details>
+
+## AEM-04: ArticleJsonServlet (Sling servlets)
+
+<details><summary>Hint 1 — nudge</summary>
+
+The resource is already on the request — `request.getResource()`. Read its ValueMap; no title → `response.sendError(404)` and return. Otherwise set the content type *before* writing, and build the JSON with the provided `jsonEscape`.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+```java
+ValueMap properties = request.getResource().getValueMap();
+String title = properties.get("title", String.class);
+if (title == null) { response.sendError(HttpServletResponse.SC_NOT_FOUND); return; }
+String body = properties.get("body", "");
+response.setContentType("application/json");
+response.setCharacterEncoding("UTF-8");
+response.getWriter().write("{\"title\":\"" + jsonEscape(title) + "\",\"body\":\"" + jsonEscape(body) + "\"}");
+```
+</details>
+
+## AEM-05: MaintenanceBannerService (OSGi)
+
+<details><summary>Hint 1 — nudge</summary>
+
+`@Activate` hands you the typed `Config`; your only job there is copying `config.enabled()` and `config.message()` into fields. The container calls it before anyone can call your getters, so the fields are always initialized.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+Two fields (`boolean enabled`, `String message`), set in `activate`. `banner()`: `enabled && message != null && !message.isBlank() ? Optional.of(message) : Optional.empty()`. The `@Reference` test needs no extra code — registering your service first is what lets the mock container inject it into `HelpCenterHeaderProvider`.
+</details>
+
+## PATT-01: FeeService (Strategy)
+
+<details><summary>Hint 1 — nudge</summary>
+
+Each policy is one lambda. Store them in an `EnumMap<CardProduct, FeePolicy>` (or on the enum itself) and `feeCents` becomes a lookup + delegate.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+`DEBIT`: `amount -> 25`. `CREDIT`: `amount -> amount * 2 / 100` (long division rounds down for you). `PREMIUM_CREDIT`: `amount -> Math.max(50, amount * 3 / 100)`. Selection: `policies.get(product).feeCents(amountCents)`.
+</details>
+
+## PATT-02: PaymentRequest.Builder (Builder)
+
+<details><summary>Hint 1 — nudge</summary>
+
+Give the builder one field per request field, pre-initialized to the defaults (`currency = "USD"`, `captureImmediately = true`). Every setter is two lines: assign, `return this`. All the thinking lives in `build()`.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+In `build()`: `if (merchantId == null || merchantId.isBlank()) throw new IllegalStateException("merchantId is required");` then the same shape for `amountCents <= 0` (message must contain `amountCents`), then `return new PaymentRequest(merchantId, amountCents, currency, captureImmediately);`.
+</details>
+
+## PATT-03: TransactionEventBus (Observer)
+
+<details><summary>Hint 1 — nudge</summary>
+
+A `List<TransactionListener>` plus three short methods. The only subtlety is `publish`: each listener call goes in its own try/catch so one failure can't stop the loop.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+`CopyOnWriteArrayList` is the classic listener-list choice (safe iteration while listeners change); a plain `ArrayList` also passes these tests. `publish`: `for (var l : listeners) { try { l.onEvent(event); } catch (RuntimeException e) { /* log in production */ } }`.
+</details>
+
+## PATT-04: LoggingGateway / RetryingGateway (Decorator)
+
+<details><summary>Hint 1 — nudge</summary>
+
+Each decorator does its extra thing and delegates to the wrapped `PaymentGateway`. Match the log format exactly: `"charge " + merchantId + " " + amountCents + " -> OK(" + auth + ")"` and `-> FAILED(message)`.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+Logging: try the delegate; on success add the OK line and return; in `catch (RuntimeException e)` add the FAILED line with `e.getMessage()` and `throw e`. Retrying: `try { return delegate.charge(...); } catch (RuntimeException first) { return delegate.charge(...); }` — letting the second call's exception fly is exactly the spec.
+</details>
+
+## PATT-05: SettlementFileProcessor (Template Method)
+
+<details><summary>Hint 1 — nudge</summary>
+
+The whole method is one loop over `lines` with two counters. Follow the Javadoc's numbered steps literally — blank check first (`line.isBlank()` → `continue`), then parse, then validate, then apply.
+</details>
+
+<details><summary>Hint 2 — approach</summary>
+
+```java
+int processed = 0, rejected = 0;
+for (String line : lines) {
+    if (line.isBlank()) continue;
+    T record = parseLine(line);
+    if (!isValid(record)) { rejected++; continue; }
+    apply(record);
+    processed++;
+}
+return new ProcessingSummary(processed, rejected);
+```
+
+Don't remove `final` from the signature — one test checks it reflectively.
+</details>
+
 ## TEST-01 … TEST-04 (you write the assertions)
 
 <details><summary>General guidance</summary>

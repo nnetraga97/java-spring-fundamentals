@@ -2,7 +2,7 @@
 
 This repository is a hands-on exercise workbook that takes you from Java/Spring beginner to staff-level backend interview readiness.
 
-It focuses on high-signal backend interview topics: Java runtime depth, concurrency, Spring Boot internals, REST APIs, persistence, transactions, messaging, observability, production debugging, and system design trade-offs — with a strong bias toward *real production failure modes*, because that is what staff-level interviewers probe.
+It focuses on high-signal backend interview topics: Java runtime depth, concurrency, Spring Boot internals, REST APIs, persistence, transactions, messaging, observability, production debugging, and system design trade-offs — with a strong bias toward *real production failure modes*, because that is what staff-level interviewers probe. It also covers the two extra areas the target role names explicitly: the Adobe AEM stack (Sling, JCR, OSGi — runnable via AEM Mocks, no AEM license needed) and design-pattern/OOAD fluency.
 
 ## Pick Your Track
 
@@ -37,6 +37,11 @@ the code and test share the same package name, the test needs no import to reach
 code it drives. Two exceptions: `exercises/common/` holds types shared by more than
 one exercise (currently just `Message`, used by `DIST-02` and `DIST-04`), and the
 Spring context smoke test stays at the test root.
+
+A lightweight self-review artifact now lives at
+`src/main/resources/static/spring-review/`. Run `./mvnw spring-boot:run` and open
+`http://localhost:8080/spring-review/` to review round-by-round Spring feedback and
+corrected mental models in the browser.
 
 Each exercise folder has a short `package-info.java` describing it. The **worked
 reference example** is `JAVA-01` — see `exercises/java01/IdempotencyCache.java`, its
@@ -73,8 +78,9 @@ To do an exercise:
 Three kinds of exercise:
 
 - **Spec tests** — a full failing test is provided as the answer key:
-  `JAVA-02..06`, `CONC-01/03/04/06`, `DIST-02/04/06`, `SPR-01` (`@WebMvcTest`),
-  `DATA-04` (`@DataJpaTest`).
+  `ONB-01/02`, `JAVA-02..06`, `CONC-01/03/04/06`, `DIST-02/04/06`, `SPR-01`
+  (`@WebMvcTest`), `DATA-04` (`@DataJpaTest`), `AEM-01..05` (AEM Mocks),
+  `PATT-01..05`.
 - **Testing placeholders** (`TEST-01..04`): a skeleton where *you* write the
   assertions — that is the skill being practiced (see `exercises/test01/Test01DomainUnitTests`).
 - **Written / demonstrate exercises**: no pass/fail test. This covers `DESIGN-*`,
@@ -117,6 +123,8 @@ Three kinds of exercise:
 - [Observability and Production Debugging](docs/exercises/07-observability-production.md)
 - [System Design and Staff-Level Communication](docs/exercises/08-system-design-staff.md)
 - [Production War Rooms](docs/exercises/09-production-war-rooms.md) — incident drills in "symptoms → investigate → root cause" form
+- [AEM, Sling, JCR, and OSGi](docs/exercises/10-aem-sling-jcr.md) — the Adobe stack the target role requires, runnable via AEM Mocks
+- [Design Patterns and OOAD](docs/exercises/11-design-patterns-ooad.md)
 
 Guides:
 
@@ -138,5 +146,7 @@ For the current interview target, start with these exercises before broadening:
 - `PROD-01`, `PROD-03`
 - `DESIGN-01`, `DESIGN-02`, `DESIGN-04`
 - `WAR-01`, `WAR-02`, `WAR-05` (spoken drills — see [Production War Rooms](docs/exercises/09-production-war-rooms.md))
+- `AEM-01..05` in order, then `AEM-06` (this req is AEM-heavy — see [the AEM track](docs/exercises/10-aem-sling-jcr.md))
+- `PATT-01`, `PATT-04` (and read the *why* Javadoc of the rest — see [Design Patterns](docs/exercises/11-design-patterns-ooad.md))
 
 That gives you a compact but serious path through the highest-probability Java/Spring staff interview material. (If any of those IDs assume knowledge you don't have yet, drop back to the [Beginner On-Ramp](docs/exercises/00-beginner-onramp.md) first — the ladder exists so nothing on this list feels like a cliff.)

@@ -68,6 +68,38 @@ Plain-English definitions for every piece of jargon the exercise catalog uses, w
 - **Rate limiting / token bucket** — capping request rates. A token bucket refills at a steady rate and allows short bursts up to its capacity. (`DIST-06`)
 - **Fail open vs fail closed** — when a safety mechanism (rate limiter, auth cache) is itself down: allow traffic (open) or block it (closed)? A deliberate policy decision, not an accident. (`DIST-06`)
 
+## AEM, Sling, JCR, and OSGi
+
+- **AEM (Adobe Experience Manager)** — Adobe's enterprise content management system, built on open-source foundations: JCR for storage, Sling for the web layer, OSGi for the runtime. (`AEM-*`)
+- **JCR (Java Content Repository)** — a standard API (implemented by Apache Jackrabbit Oak) where content is a *tree of nodes with properties* addressed by path, not rows in tables. (`AEM-01`)
+- **Node / property** — a node is a tree element (like `/content/help/fees`); properties are the named values it carries (title, body). Creating structure needs no schema migration. (`AEM-01`)
+- **Apache Sling** — AEM's web framework: a URL resolves to a *resource*, and the resource's type — not a route table — picks the code that renders it. "Content drives routing." (`AEM-02`, `AEM-04`)
+- **Resource / `sling:resourceType`** — Sling's universal wrapper around content; the `sling:resourceType` property names the component responsible for it. (`AEM-02`)
+- **`adaptTo`** — Sling's converter mechanism: `resource.adaptTo(ValueMap.class)`, `adaptTo(Node.class)`, `adaptTo(MyModel.class)`. Returns `null` (not an exception) when adaptation fails — a famous debugging gotcha. (`AEM-02`, `AEM-03`)
+- **Sling Model** — an annotated POJO (`@Model`, `@ValueMapValue`) that Sling populates from a resource, replacing hand-written property lookups. (`AEM-03`)
+- **HTL (HTML Template Language, formerly Sightly)** — AEM's XSS-safe template language; its expressions read Sling Model getters.
+- **OSGi / Apache Felix** — the module system and runtime under AEM: code ships as *bundles*, classes become *components*, and components publish *services* other components consume. OSGi is to AEM what the Spring container is to a Boot app. (`AEM-05`)
+- **`@Component` / `@Reference` / `@Activate` (OSGi)** — declare a managed component, inject another service, and receive typed configuration at startup or on config change — the OSGi counterparts of `@Service`, `@Autowired`, and `@ConfigurationProperties`. (`AEM-05`)
+- **Dispatcher** — the Apache HTTP Server module in front of AEM publish instances: caches pages, filters requests (security allowlist), and absorbs most traffic. (`AEM-06`)
+- **Author / publish tiers** — editors work on *author* instances; visitors hit *publish* instances; "activating" content replicates it from author to publish and invalidates Dispatcher caches. (`AEM-06`)
+- **DAM (Digital Asset Management)** — AEM's asset store under `/content/dam` (images, PDFs, video) with metadata and renditions.
+- **MSM (Multi Site Manager) / live copy / blueprint** — machinery for running many sites from one master (*blueprint*): *live copies* inherit content and receive *rollouts* of changes until an editor breaks inheritance locally. (`AEM-07`)
+- **Language Copy** — a translated copy of a content tree, usually feeding a translation workflow, for multi-language sites. (`AEM-07`)
+
+## Design Patterns and OOAD
+
+- **OOAD** — object-oriented analysis and design: deciding what the objects are, what they own, and how they collaborate, before writing code.
+- **Strategy** — swap an algorithm behind an interface so callers don't care which variant runs. (`PATT-01`)
+- **Builder** — assemble a many-field immutable object with named, order-free steps and one validation point at `build()`. (`PATT-02`)
+- **Observer** — publishers notify a dynamic list of subscribers without knowing who they are; the in-process ancestor of messaging. (`PATT-03`)
+- **Decorator** — wrap an object in another object with the same interface to layer on behavior (logging, retry, caching); Spring's AOP proxies are generated decorators. (`PATT-04`, `SPR-04`)
+- **Template Method** — a `final` method fixes a sequence of steps; subclasses fill in the varying steps via hooks. (`PATT-05`)
+- **State** — an object whose behavior changes with an explicit internal state; you already built two (`JAVA-02`, `CONC-04`).
+- **Chain of Responsibility** — pass a request along handlers until one (or all) deal with it; the `ValidatorPipeline` is a cousin. (`JAVA-03`)
+- **Value Object** — a small immutable type defined by its value, not identity (`Money`, `IdempotencyKey`, `MaskedPan`). (`ONB-01`, `ONB-02`, `JAVA-01`)
+- **SOLID** — five design principles (Single responsibility, Open/Closed, Liskov substitution, Interface segregation, Dependency inversion); interviewers usually want one concrete example each, not definitions. (`PATT-06`)
+- **Composition over inheritance** — prefer building behavior by combining objects (Strategy, Decorator) rather than subclassing (Template Method); reach for inheritance when an invariant *sequence* needs protecting. (`PATT-05`)
+
 ## Observability and Production
 
 - **Liveness vs readiness** — liveness: "restart me if this fails"; readiness: "don't send me traffic yet." Confusing them causes restart loops or dropped traffic. (`PROD-01`)

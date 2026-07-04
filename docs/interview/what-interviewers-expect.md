@@ -34,6 +34,20 @@ A pattern worth internalizing first: **staff answers volunteer trade-offs, failu
 - **Staff:** frames it as a *detection* problem first ("invisible at dev data sizes — I assert query counts in tests or watch SQL logs"), knows three fixes and when each fits (fetch join — but it breaks pagination with collection joins; entity graphs; DTO projection which avoids entity overhead entirely for read paths), and refuses the tempting global fix ("eager loading everywhere trades N+1 for loading the object graph every time").
 - **Traps:** "Why not make everything eager?" "Fetch join with pagination — what goes wrong?" (Hibernate paginates in memory — the classic.) "When would you *not* use entities for a read?"
 
+## Design patterns and OOAD (PATT-01..06)
+
+- **Mid:** can define Strategy, Builder, Observer, Decorator, Singleton and sketch the UML.
+- **Staff:** *justifies* rather than recites — "this is a Strategy because the variation is one algorithm and I need it swappable per market; if it were three stable cases I'd use a sealed type and a switch"; spots patterns in the frameworks in front of them (`@Transactional` = generated Decorator, `JdbcTemplate` = Template Method, Spring events = Observer); and volunteers the failure mode of patterns — ceremony, indirection, AbstractSingletonProxyFactoryBean jokes — because knowing when *not* to is the senior half of the skill.
+- **Traps:** "Show me this pattern in Spring." "Strategy vs Template Method — same problem, pick one and defend it." "Your teammate wrapped one `if` in a pattern with four classes — what do you say in review?" "Which SOLID principle does this violate?" (asked about *your* code from earlier in the interview.)
+
+## AEM, Sling, and OSGi (AEM-01..08)
+
+The stack this role actually names. The interviewer is usually testing whether you understand the *architecture*, not whether you've memorized console URLs.
+
+- **Mid:** knows AEM is a CMS with author/publish tiers, components, templates, and a Dispatcher cache; can write a Sling Model.
+- **Staff:** explains the three-layer architecture in one breath (JCR stores a content tree → Sling resolves URLs to resources and lets `sling:resourceType` pick the renderer → OSGi runs it all as swappable services); frames the big idea as "content drives routing — the opposite of Spring MVC"; knows why path-bound servlets are discouraged (they bypass resource resolution *and its access control*); treats the Dispatcher as both cache and security allowlist and can walk a stale-content incident (activation → invalidation → stat files → CDN on top); and talks about migrations as idempotent, resumable, section-by-section jobs with URL preservation — never big-bang.
+- **Traps:** "Walk me through `GET /content/help/fees.json` end to end." "Why did `adaptTo` return null and how do you debug it?" "An editor says publish 'didn't work' — where do you look, in order?" (author replication queue → publish content → Dispatcher invalidation → CDN.) "What belongs in the JCR and what belongs in a database?" (content vs transactional data — putting a ledger in JCR is the wrong answer they're fishing for.)
+
 ## Idempotency (DESIGN-02, WAR-05)
 
 The signature payments-company topic. Expect it.
