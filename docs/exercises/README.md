@@ -2,6 +2,37 @@
 
 This catalog is meant to be used as a coding workout board, not as a passive study plan.
 
+## Difficulty Ladder
+
+Every exercise, ordered by the background it assumes. Climb in order if you're building from scratch; jump in wherever you're comfortable. Levels don't equal *worth* — `ONB-01` and `WAR-05` teach the same idea (idempotent, leak-proof design) at opposite ends of the ladder.
+
+**Level 1 — Beginner** (new to Java or returning after years away):
+
+- `ONB-01..04` — the [on-ramp](00-beginner-onramp.md): types that protect you, money math, stack traces, running the app
+- `JAVA-01` (read the worked example), `JAVA-02`, `JAVA-06`, `TEST-01`
+
+**Level 2 — Core backend** (comfortable in Java, learning to build services well):
+
+- `JAVA-03`, `JAVA-04`, `JAVA-05`
+- `CONC-01`, `CONC-03`, `CONC-05`
+- `SPR-01`, `SPR-02`, `SPR-03`, `SPR-05`
+- `DATA-01`, `DATA-02`, `DATA-03`, `DATA-06`
+- `TEST-02`, `TEST-03`, `TEST-04`
+- `PROD-01`, `PROD-02`
+
+**Level 3 — Senior/staff** (production judgment, distributed correctness, trade-off fluency):
+
+- `CONC-02`, `CONC-04`, `CONC-06`
+- `SPR-04`, `SPR-06`, `SPR-07`, `SPR-08`
+- `DATA-04`, `DATA-05`, `DATA-07`
+- `TEST-05`
+- `DIST-01..06`
+- `PROD-03..06`
+- `DESIGN-01..06`
+- `WAR-01..06` — the [war-room drills](09-production-war-rooms.md), best done after their hands-on siblings
+
+Prerequisite rule of thumb: within a topic, do the lower-numbered levels first; across topics, `CONC-01` before any `DIST-*`, `DATA-01/02` before `DATA-04+`, and `SPR-01` before other `SPR-*`.
+
 On any given day:
 
 1. Create a new branch (or run `./scripts/start-exercise.sh <ID> <slug>` to branch and seed a note in one step).
@@ -9,6 +40,8 @@ On any given day:
 3. Implement code and tests.
 4. Add a short learning note.
 5. Commit the branch.
+
+Stuck mid-exercise? Use the [progressive hints](../guides/hints.md) (one at a time) and the [glossary](../guides/glossary.md) for unfamiliar terms — that beats abandoning the session.
 
 ## Recommended Branch Names
 
@@ -27,6 +60,7 @@ The project already exists as a runnable Maven + Spring Boot app (see the top-le
 
 ```text
 src/main/java/com/nick/javafundamentals/exercises/
+  onb01/ onb02/  # beginner on-ramp (ONB-01, ONB-02)
   java01/  # JAVA-01 (worked reference example)
   java02/ java03/ java04/ java05/ java06/
   conc01/ conc03/ conc04/ conc06/
