@@ -67,6 +67,26 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!--
+          AEM / Sling / JCR / OSGi (AEM-*). aem-sdk-api is compile-only
+          ("provided"): it supplies the Sling, JCR, and OSGi APIs the AEM
+          exercises compile against but is never packaged into the Spring Boot
+          jar. AEM Mocks gives the tests an in-memory Sling/JCR/OSGi
+          environment, so no real AEM instance is needed.
+        -->
+        <dependency>
+            <groupId>com.adobe.aem</groupId>
+            <artifactId>aem-sdk-api</artifactId>
+            <version>2025.7.21570.20250715T080514Z-250600</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.wcm</groupId>
+            <artifactId>io.wcm.testing.aem-mock.junit5</artifactId>
+            <version>5.6.10</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Testing (TEST-*) -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -104,6 +124,26 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <!--
+              Generates OSGi SCR metadata (OSGI-INF/*.xml) from @Component
+              annotations at build time, exactly like a real AEM project build.
+              The AEM-05 test's registerInjectActivateService reads this
+              metadata to activate components; without it, OSGi mocks fail with
+              "No OSGi SCR metadata found". The Spring Boot jar is unaffected —
+              only target/classes gains the extra descriptor files.
+            -->
+            <plugin>
+                <groupId>biz.aQute.bnd</groupId>
+                <artifactId>bnd-maven-plugin</artifactId>
+                <version>7.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>bnd-process</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

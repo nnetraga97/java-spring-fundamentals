@@ -3,6 +3,17 @@ spring:
     name: java-spring-fundamentals
   profiles:
     active: local
+  # The AEM exercises put aem-sdk-api (a huge API uber-jar) on the compile/test
+  # classpath. It happens to contain com.mongodb API classes, which makes Spring
+  # Boot's @ConditionalOnClass think a Mongo driver is installed and activate
+  # Mongo auto-configuration — which then crashes on classes the SDK does not
+  # ship. Excluding it is the fix (and a live demo of how auto-configuration
+  # conditions work — see SPR-03).
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration
+      - org.springframework.boot.actuate.autoconfigure.metrics.mongo.MongoMetricsAutoConfiguration
+      - org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration
 
 # Actuator defaults are intentionally conservative. PROD-01 asks you to expose
 # health/liveness/readiness deliberately and restrict the rest.
