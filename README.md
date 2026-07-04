@@ -1,8 +1,14 @@
 # Staff Java and Spring Exercises
 
-This repository is a hands-on exercise workbook for senior and staff-level Java backend interviews.
+This repository is a hands-on exercise workbook that takes you from Java/Spring beginner to staff-level backend interview readiness.
 
-The first pass is intentionally focused on high-signal backend interview topics: Java runtime depth, concurrency, Spring Boot internals, REST APIs, persistence, transactions, messaging, observability, production debugging, and system design trade-offs.
+It focuses on high-signal backend interview topics: Java runtime depth, concurrency, Spring Boot internals, REST APIs, persistence, transactions, messaging, observability, production debugging, and system design trade-offs — with a strong bias toward *real production failure modes*, because that is what staff-level interviewers probe.
+
+## Pick Your Track
+
+- **New to Java or Spring (or rusty):** read [Getting Started](docs/guides/getting-started.md) (zero-assumption setup), then do the [Beginner On-Ramp](docs/exercises/00-beginner-onramp.md) (`ONB-01..04`). Keep the [Glossary](docs/guides/glossary.md) open in a tab and use the [progressive hints](docs/guides/hints.md) when stuck — one hint at a time.
+- **Comfortable with Java, building depth:** follow the [difficulty ladder](docs/exercises/README.md#difficulty-ladder) through the main catalog, starting from the worked example `JAVA-01`.
+- **Interview soon:** do the Suggested First Track below, run the [Production War Rooms](docs/exercises/09-production-war-rooms.md) drills out loud, and calibrate your answers against [What Interviewers Actually Listen For](docs/interview/what-interviewers-expect.md).
 
 ## Getting Started
 
@@ -100,7 +106,8 @@ Three kinds of exercise:
 
 ## Catalog
 
-- [Exercise Workflow](docs/exercises/README.md)
+- [Exercise Workflow and Difficulty Ladder](docs/exercises/README.md)
+- [Beginner On-Ramp](docs/exercises/00-beginner-onramp.md)
 - [Java Runtime and Language Depth](docs/exercises/01-java-runtime-language.md)
 - [Concurrency and Resilience](docs/exercises/02-concurrency-resilience.md)
 - [Spring Core, Boot, and REST APIs](docs/exercises/03-spring-core-rest.md)
@@ -109,6 +116,14 @@ Three kinds of exercise:
 - [Messaging and Distributed Systems](docs/exercises/06-messaging-distributed-systems.md)
 - [Observability and Production Debugging](docs/exercises/07-observability-production.md)
 - [System Design and Staff-Level Communication](docs/exercises/08-system-design-staff.md)
+- [Production War Rooms](docs/exercises/09-production-war-rooms.md) — incident drills in "symptoms → investigate → root cause" form
+
+Guides:
+
+- [Getting Started (zero assumptions)](docs/guides/getting-started.md)
+- [Glossary](docs/guides/glossary.md)
+- [Progressive Hints](docs/guides/hints.md)
+- [What Interviewers Actually Listen For](docs/interview/what-interviewers-expect.md)
 
 ## Suggested First Track
 
@@ -122,5 +137,6 @@ For the current interview target, start with these exercises before broadening:
 - `DIST-01`, `DIST-02`, `DIST-04`
 - `PROD-01`, `PROD-03`
 - `DESIGN-01`, `DESIGN-02`, `DESIGN-04`
+- `WAR-01`, `WAR-02`, `WAR-05` (spoken drills — see [Production War Rooms](docs/exercises/09-production-war-rooms.md))
 
-That gives you a compact but serious path through the highest-probability Java/Spring staff interview material.
+That gives you a compact but serious path through the highest-probability Java/Spring staff interview material. (If any of those IDs assume knowledge you don't have yet, drop back to the [Beginner On-Ramp](docs/exercises/00-beginner-onramp.md) first — the ladder exists so nothing on this list feels like a cliff.)
