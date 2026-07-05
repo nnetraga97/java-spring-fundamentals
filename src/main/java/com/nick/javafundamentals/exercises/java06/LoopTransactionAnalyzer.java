@@ -11,7 +11,12 @@ public class LoopTransactionAnalyzer implements TransactionAnalyzer {
 
     @Override
     public Map<String, Long> totalAmountByMerchant(List<Transaction> transactions) {
-        throw new UnsupportedOperationException(
-                "TODO JAVA-06: sum amounts per merchant using an explicit loop");
+        Map<String, Long> totalsByMerchant = new java.util.HashMap<>();
+        for (Transaction transaction : transactions) {
+            String merchant = transaction.merchantId();
+            long amount = transaction.amountCents();
+            totalsByMerchant.put(merchant, totalsByMerchant.getOrDefault(merchant, 0L) + amount);
+        }
+        return totalsByMerchant;
     }
 }

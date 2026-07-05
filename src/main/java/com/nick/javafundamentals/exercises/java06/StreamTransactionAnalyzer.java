@@ -12,7 +12,10 @@ public class StreamTransactionAnalyzer implements TransactionAnalyzer {
 
     @Override
     public Map<String, Long> totalAmountByMerchant(List<Transaction> transactions) {
-        throw new UnsupportedOperationException(
-                "TODO JAVA-06: sum amounts per merchant using the Stream API");
+        Map<String, Long> totalsByMerchant = transactions.stream()
+                .collect(java.util.stream.Collectors.groupingBy(
+                        Transaction::merchantId,
+                        java.util.stream.Collectors.summingLong(Transaction::amountCents)));
+        return totalsByMerchant;
     }
 }

@@ -31,7 +31,10 @@ public final class ValidatorPipeline<T> {
 
     /** Runs every validator in order and returns all violation messages combined. */
     public List<String> validate(T value) {
-        throw new UnsupportedOperationException(
-                "TODO JAVA-03: run each validator in order and collect all messages");
+        List<String> violations = new java.util.ArrayList<>();
+        for(Validator v : validators) {
+            violations.addAll(v.validate(value));
+        }
+        return violations;
     }
 }

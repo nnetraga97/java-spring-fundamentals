@@ -23,7 +23,10 @@ public class AuthorizationService {
     }
 
     public String authorize(String authorizationId) {
-        throw new UnsupportedOperationException(
-                "TODO JAVA-04: call the repository and translate RepositoryException");
+        try {
+            return repository.persist(authorizationId);
+        } catch (RepositoryException e) {
+            throw new AuthorizationServiceException("Failed to authorize", e);
+        }
     }
 }

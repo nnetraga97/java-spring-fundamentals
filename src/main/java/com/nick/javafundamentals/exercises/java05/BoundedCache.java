@@ -18,12 +18,15 @@ import java.util.Optional;
 public class BoundedCache<K, V> {
 
     private final int capacity;
+    private long evictionCount;
+    private final java.util.LinkedHashMap<K, V> map = new java.util.LinkedHashMap<>();
 
     public BoundedCache(int capacity) {
         if (capacity < 1) {
             throw new IllegalArgumentException("capacity must be >= 1");
         }
         this.capacity = capacity;
+        this.evictionCount = 0;
     }
 
     public int capacity() {
@@ -31,20 +34,23 @@ public class BoundedCache<K, V> {
     }
 
     public void put(K key, V value) {
-        throw new UnsupportedOperationException(
-                "TODO JAVA-05: insert; if size would exceed capacity, evict the oldest entry");
+       this.map.put(key, value);
+         if (this.map.size() > this.capacity) {
+            this.map.remove(this.map.keySet().iterator().next());
+            this.evictionCount++;
+        }
     }
 
     public Optional<V> get(K key) {
-        throw new UnsupportedOperationException("TODO JAVA-05: look up the value");
+        return Optional.ofNullable(this.map.get(key));
     }
 
     public int size() {
-        throw new UnsupportedOperationException("TODO JAVA-05: current number of entries");
+        return this.map.size();
     }
 
     /** How many entries have been evicted due to capacity over the cache's lifetime. */
     public long evictionCount() {
-        throw new UnsupportedOperationException("TODO JAVA-05: count evictions");
+        return this.evictionCount;
     }
 }

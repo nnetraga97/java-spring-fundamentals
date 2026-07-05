@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
  * {@link BoundedCache} until GREEN. Eviction policy: oldest inserted entry leaves
  * first.
  */
-@Disabled("JAVA-05 — remove this line to begin the exercise")
 class BoundedCacheTest {
 
     @Test

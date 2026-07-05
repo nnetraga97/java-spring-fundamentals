@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spring Review Desk</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="grain"></div>
+    <main class="page-shell">
+      <section class="hero">
+        <p class="eyebrow">Spring Review Desk</p>
+        <div class="hero-grid">
+          <div>
+            <h1>One review page for every round, weak spot, and correction.</h1>
+            <p class="hero-copy">
+              This desk keeps the running record of your Spring interview rounds:
+              scores, misconceptions, corrected mental models, and the short
+              rules worth revisiting before the next session.
+            </p>
+            <div class="hero-actions">
+              <a href="#overview" class="action-link">Review weak spots</a>
+              <a href="#rounds" class="action-link action-link-alt">Open round log</a>
+            </div>
+          </div>
+          <aside class="score-panel" id="score-panel"></aside>
+        </div>
+      </section>
+
+      <section id="overview" class="panel">
+        <div class="section-header">
+          <p class="section-label">Priority Review</p>
+          <h2>What needs the most attention right now</h2>
+        </div>
+        <div id="priority-grid" class="priority-grid"></div>
+      </section>
+
+      <section class="panel split-panel">
+        <div>
+          <div class="section-header">
+            <p class="section-label">Keep These</p>
+            <h2>Your strongest instincts so far</h2>
+          </div>
+          <div id="strength-list" class="stack-list"></div>
+        </div>
+        <div>
+          <div class="section-header">
+            <p class="section-label">Watch These</p>
+            <h2>Recurring misunderstandings</h2>
+          </div>
+          <div id="recurring-list" class="stack-list"></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-header">
+          <p class="section-label">Core Mental Models</p>
+          <h2>The Spring ideas to reread before interviews</h2>
+        </div>
+        <div id="mental-models" class="model-grid"></div>
+      </section>
+
+      <section id="rounds" class="panel">
+        <div class="section-header">
+          <p class="section-label">Round Log</p>
+          <h2>Detailed feedback for each completed round</h2>
+        </div>
+        <div id="rounds-list" class="rounds-list"></div>
+      </section>
+    </main>
+
+    <script src="./review-data.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>

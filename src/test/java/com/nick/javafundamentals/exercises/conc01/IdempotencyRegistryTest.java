@@ -18,7 +18,6 @@ import org.junit.jupiter.api.Test;
  * Spec for {@code CONC-01}. Remove {@code @Disabled}, then implement
  * {@link IdempotencyRegistry#getOrCompute} until GREEN.
  */
-@Disabled("CONC-01 — remove this line to begin the exercise")
 class IdempotencyRegistryTest {
 
     @Test

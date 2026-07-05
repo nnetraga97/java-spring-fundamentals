@@ -15,7 +15,6 @@ import org.junit.jupiter.params.provider.MethodSource;
  * stream implementation, proving they behave identically. Remove {@code @Disabled}
  * and implement both analyzers until GREEN, then decide which you'd keep.
  */
-@Disabled("JAVA-06 — remove this line to begin the exercise")
 class TransactionAnalyzerTest {
 
     static Stream<TransactionAnalyzer> analyzers() {
