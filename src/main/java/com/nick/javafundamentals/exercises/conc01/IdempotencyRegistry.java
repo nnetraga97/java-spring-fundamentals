@@ -26,7 +26,6 @@ public class IdempotencyRegistry<V> {
 
     /** Returns the existing result for {@code key}, or computes and stores it once. */
     public V getOrCompute(String key, Supplier<V> computation) {
-        throw new UnsupportedOperationException(
-                "TODO CONC-01: make check-and-compute atomic so the supplier runs once per key");
+        return results.computeIfAbsent(key, k -> computation.get());
     }
 }

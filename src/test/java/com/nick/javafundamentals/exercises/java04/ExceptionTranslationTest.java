@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
  * Spec for {@code JAVA-04}. Remove {@code @Disabled}, then implement
  * {@link AuthorizationService#authorize} until GREEN.
  */
-@Disabled("JAVA-04 — remove this line to begin the exercise")
 class ExceptionTranslationTest {
 
     // Simulates the leaky low-level detail we must not expose to callers.

@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
  * Spec for {@code JAVA-03}. Remove {@code @Disabled}, then implement
  * {@link ValidatorPipeline#validate} until GREEN.
  */
-@Disabled("JAVA-03 — remove this line to begin the exercise")
 class ValidatorPipelineTest {
 
     record PaymentCommand(long amountCents, String currency) {
